@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
+		<title>{{ site.name }} {% if page.title %} :: {{ page.title }} {% endif %}</title>
 
     {% include meta.html %}
 
@@ -27,8 +27,9 @@
           </div>
 
           <nav>
-            <a href="{{ site.baseurl }}/">Blog</a>
-            <a href="{{ site.baseurl }}/about">About</a>
+						<a href="https://github.com/growlnx">Github</a>
+            <a href="{{ site.baseurl }}/whoami">Whoami</a>
+						<a href="{{ site.baseurl }}/feed.xml">Feed</a>
           </nav>
         </header>
       </div>
@@ -38,14 +39,13 @@
       {{ content }}
     </div>
 
-    <div class="wrapper-footer">
+    <!--div class="wrapper-footer">
       <div class="container">
         <footer class="footer">
           {% include svg-icons.html %}
         </footer>
       </div>
-    </div>
+    </div-->
 
-    {% include analytics.html %}
   </body>
 </html>

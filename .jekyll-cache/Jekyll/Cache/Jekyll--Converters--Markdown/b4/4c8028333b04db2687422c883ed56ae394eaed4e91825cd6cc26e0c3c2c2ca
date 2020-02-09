@@ -1,0 +1,146 @@
+I"�0<p><img src="http://gifsstore.com/public/upload/gifs/15774085601577408551.gif" alt="" /></p>
+
+<p><a href="https://crackmes.one/crackme/5d64749533c5d46f00e2c324">Link para o desafio</a></p>
+
+<p>Um salve pro <a href="https://crackmes.one/user/paypain">@paypain</a> por este crackme!</p>
+
+<p>A minha solução para este desafio não é nada complexa ou inovadora, basicamente a idéia é fazer o hijack de alguma função que escreva no stdout.</p>
+
+<p>O arquivo é um ELF executável, dinamicamente linkado, não stripado e com informações de debug. Isso nos ajuda bastante.</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>file ./election 
+election: ELF 64-bit LSB executable, x86-64, version 1 <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib/ld-linux-x86-64.so.2, <span class="k">for </span>GNU/Linux 3.2.0, BuildID[sha1]<span class="o">=</span>11eeb817ee59b456bb7e9ecd3d93c475cd048056, with debug_info, not stripped</code></pre></figure>
+
+<p>Executando é possível perceber que ele imprime um ranking contendo valores randômicos.</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>./election 
+Welcome to election of United Crackme of One <span class="nb">.</span>
+
+Counting the votes <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span>
+Total votes: 88
+The final result is:
+	Bob -&gt; 1 Place with 48 votes
+	Sar -&gt; 2 Place with 38 votes
+	Poe -&gt; 3 Place with 2 votes</code></pre></figure>
+
+<p>Podemos hookar as funções que ele usa da libc.so.6.</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ldd ./election 
+linux-vdso.so.1 <span class="o">(</span>0x00007ffe9391b000<span class="o">)</span>
+libc.so.6 <span class="o">=&gt;</span> /usr/lib/libc.so.6 <span class="o">(</span>0x00007fd855f0c000<span class="o">)</span>
+/lib/ld-linux-x86-64.so.2 <span class="o">=&gt;</span> /usr/lib64/ld-linux-x86-64.so.2 <span class="o">(</span>0x00007fd85610e000<span class="o">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>objdump <span class="nt">-T</span> ./election 
+
+election:     formato de ficheiro elf64-x86-64
+
+DYNAMIC SYMBOL TABLE:
+0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.2.5 getenv
+0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.2.5 puts
+0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.17  clock_gettime
+0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.2.5 <span class="nb">printf
+</span>0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.2.5 __libc_start_main
+0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.2.5 srand
+0000000000000000  w   D  <span class="k">*</span>UND<span class="k">*</span>	0000000000000000              __gmon_start__
+0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.2.5 ptrace
+0000000000000000      DF <span class="k">*</span>UND<span class="k">*</span>	0000000000000000  GLIBC_2.2.5 rand</code></pre></figure>
+
+<p>Porém precisamos saber quando elas são chamadas e o que fazem, ou seja, precisamos debugar.</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ltrace ./election 
+getenv<span class="o">(</span><span class="s2">"LD_PRELOAD"</span><span class="o">)</span>                                       <span class="o">=</span> nil
+ptrace<span class="o">(</span>0, 0, 1, 0<span class="o">)</span>                                         <span class="o">=</span> <span class="nt">-1</span>
+puts<span class="o">(</span><span class="s2">"[Anti-debug ALERT] Corruption ! "</span>...[Anti-debug ALERT] Corruption <span class="o">!</span> S4r is trying to manipulate the election <span class="o">!!</span>
+<span class="o">)</span>                <span class="o">=</span> 76
++++ exited <span class="o">(</span>status 1<span class="o">)</span> +++</code></pre></figure>
+
+<p>Como podemos ver, existem proteções contra modificações em runtime.</p>
+
+<p>função getenv está verificando se a variável de ambiente “LD_PRELOAD” possui algum valor. Isto impede o hook, porém é bem easy de bypassar.</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">char</span> <span class="o">*</span>
+<span class="c1">// getenv original: https://code.woboq.org/userspace/glibc/stdlib/getenv.c.html </span>
+<span class="n">getenv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Sabendo isto, é só fazer o hook de algumas funçõezinhas… e será possível fazer o Sar sempre ganhar.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nv">LD_PRELOAD</span><span class="o">=</span>./libmeeseeks.so ./election
+<span class="go">Welcome to election of United Crackme of One .
+
+Counting the votes . . .
+Total votes: 190
+The final result is:
+</span><span class="gp">	Bob -&gt;</span><span class="w"> </span>2 Place with 39 votes
+<span class="gp">	Sar -&gt;</span><span class="w"> </span>1 Place with 113 votes
+<span class="gp">	Poe -&gt;</span><span class="w"> </span>3 Place with 38 votes
+</code></pre></div></div>
+
+<p>Codígo-fonte da solução:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">/// filename: meeseeks.c</span>
+<span class="c1">/// compile: gcc -fpic -ldl -shared -o libmeeseeks.so meeseeks.c</span>
+<span class="c1">/// usage: $ LD_PRELOAD=./libmeeseeks.so ./election</span>
+<span class="cp">#define _GNU_SOURCE
+</span>
+<span class="cp">#include &lt;dlfcn.h&gt;
+#include &lt;gnu/lib-names.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/ptrace.h&gt;
+#include &lt;time.h&gt;
+</span>
+<span class="kt">void</span><span class="o">*</span> <span class="n">handle</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">orig_printf</span><span class="p">)(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="p">...)</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="kt">unsigned</span> <span class="n">printf_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bob</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poe</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">char</span><span class="o">*</span>
+<span class="nf">getenv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span>
+<span class="nf">printf</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">str</span><span class="p">,</span> <span class="p">...)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">orig_printf</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">handle</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+      <span class="n">handle</span> <span class="o">=</span> <span class="n">dlopen</span><span class="p">(</span><span class="n">LIBC_SO</span><span class="p">,</span> <span class="n">RTLD_LAZY</span><span class="p">);</span>
+    <span class="n">orig_printf</span> <span class="o">=</span> <span class="n">dlsym</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s">"printf"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">printf_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+    <span class="n">sar</span> <span class="o">=</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="n">bob</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">50</span><span class="p">;</span>
+    <span class="n">poe</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">40</span><span class="p">;</span>
+    <span class="n">orig_printf</span><span class="p">(</span><span class="s">"Total votes: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">sar</span> <span class="o">+</span> <span class="n">bob</span> <span class="o">+</span> <span class="n">poe</span><span class="p">);</span>
+    <span class="o">++</span><span class="n">printf_count</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">bob_pos</span><span class="p">,</span> <span class="n">poe_pos</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">bob</span> <span class="o">&gt;</span> <span class="n">poe</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">bob_pos</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="n">poe_pos</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">poe_pos</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="n">bob_pos</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">orig_printf</span><span class="p">(</span><span class="s">"The final result is:</span><span class="se">\n</span><span class="s">"</span>
+                <span class="s">"</span><span class="se">\t</span><span class="s">Bob -&gt; %d Place with %d votes</span><span class="se">\n</span><span class="s">"</span>
+                <span class="s">"</span><span class="se">\t</span><span class="s">Sar -&gt; 1 Place with %d votes</span><span class="se">\n</span><span class="s">"</span>
+                <span class="s">"</span><span class="se">\t</span><span class="s">Poe -&gt; %d Place with %d votes</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                <span class="n">bob_pos</span><span class="p">,</span>
+                <span class="n">bob</span><span class="p">,</span>
+                <span class="n">sar</span><span class="p">,</span>
+                <span class="n">poe_pos</span><span class="p">,</span>
+                <span class="n">poe</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+:ET
