@@ -79,3 +79,7 @@ Confirmando que consigo realizar o upload de uma webshell, testei se realmente o
 ![](/imgs/urce-wp-file-manager/RCE.png)
 
 A webshell "b4ckd00r.php" foi interpretada com sucesso pelo servidor e *voilà*!, **Unauth RCE** :smirk:.
+
+**Mitigação**: Uma possível forma de reduzir o impacto dessa vulnerabilidade enquanto não há um patch disponibilizado pelo fornecedor seria mantendo o PHP atualizado e desabilitar as funções críticas, por exemplo: system, exec, shell_exec. 
+
+Recomendo seguir a [PHP Configuration Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/PHP_Configuration_Cheat_Sheet.html) da OWASP.
