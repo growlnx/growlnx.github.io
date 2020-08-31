@@ -34,7 +34,7 @@ Com a wordlist pronta, usei o fuzzer do zaproxy para enviar vários "GET" nos ar
 
 ![](/imgs/urce-wp-file-manager/fuzz_example.png)
 
-Normalente para aumentar a velocidade do fuzzing, eu reduzo o delay e aumento a quantidade threads.
+Normalmente para aumentar a velocidade do fuzzing, eu reduzo o delay e aumento a quantidade threads.
 
 ![](/imgs/urce-wp-file-manager/fuzz_tunning.png)
 
