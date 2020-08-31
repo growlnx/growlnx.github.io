@@ -4,6 +4,8 @@ title: Unauth RCE no Wordpress File Manager
 permalink: /web/urce-wp-file-manager
 ---
 
+**Atenção**: A técnica desmontrada neste artigo tem o propósito de ser um material educativo, a exploração foi feita em um ambiente controlado. Não realize esta exploração sem a autorização do dono do servidor, pois isto poderá resultar em um crime! 
+
 ![](/imgs/urce-wp-file-manager/plugin_store.png)
 
 Bom, pra quem ainda não conhece o [Wordpress File Manager](https://br.wordpress.org/plugins/wp-file-manager/) é um plugin do Wordpress que simula a interface de um gerenciador de arquivos, é bem prático.
@@ -77,5 +79,3 @@ Confirmando que consigo realizar o upload de uma webshell, testei se realmente o
 ![](/imgs/urce-wp-file-manager/RCE.png)
 
 A webshell "b4ckd00r.php" foi interpretada com sucesso pelo servidor e *voilà*!, **Unauth RCE** :smirk:.
-
-**Atenção**: A técnica desmontrada neste artigo tem o propósito de ser um material educativo, a exploração foi feita em um ambiente controlado. Não realize esta exploração sem a autorização do dono do servidor, pois isto poderá resultar em um crime! 
