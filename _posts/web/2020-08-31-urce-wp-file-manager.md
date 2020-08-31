@@ -8,7 +8,7 @@ permalink: /web/urce-wp-file-manager
 
 Bom, pra quem ainda não conhece o [Wordpress File Manager](https://br.wordpress.org/plugins/wp-file-manager/) é um plugin do Wordpress que simula a interface de um gerenciador de arquivos, é bem prático.
 
-Usei o docker compose para configurar uma ambiente controlado de testes, seguindo o [tutorial oficial](https://docs.docker.com/compose/wordpress/).
+Usei o docker compose para configurar um ambiente controlado de testes, seguindo o [tutorial oficial](https://docs.docker.com/compose/wordpress/).
 
 ![](/imgs/urce-wp-file-manager/docker_compose_config.png)
 
@@ -30,10 +30,9 @@ Fiz uma wordlist com os arquivos do meu interesse que poderiam ser acessíveis a
 
 Com a wordlist pronta, usei o fuzzer do zaproxy para enviar vários "GET" nos arquivos estando desautenticado.
 
-
 ![](/imgs/urce-wp-file-manager/fuzz_example.png)
 
-Para aumentar a velocidade do fuzzing, eu diminuo o delay e aumento a quantidade threads.
+Para aumentar a velocidade do fuzzing, eu reduzo o delay e aumento a quantidade threads.
 
 ![](/imgs/urce-wp-file-manager/fuzz_tunning.png)
 
@@ -41,7 +40,7 @@ Para aumentar a velocidade do fuzzing, eu diminuo o delay e aumento a quantidade
 
 Foi relativamente rápido, e obtive 979 resultados para analisar.
 
-Então tive a ideia de filtrar os resultados, para analisar possíveis vazamentos em conjuntos menores.
+Então tive a ideia de filtrar os resultados, analisar possíveis vazamentos em conjuntos menores é mais fácil.
 
 ![](/imgs/urce-wp-file-manager/cmd_responses.png)
 
