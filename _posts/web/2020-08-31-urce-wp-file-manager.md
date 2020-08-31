@@ -64,7 +64,7 @@ Já foi [reportado](https://www.secsignal.org/news/cve-2019-9194-triggering-and-
 
 ![](/imgs/urce-wp-file-manager/PoC_python.png)
 
-E tive uma surpresa, é permitido o upload de arquivos arbritrários no servidor.
+E tive uma surpresa, é permitido o upload de arquivos arbitrários no servidor.
 
 ![](/imgs/urce-wp-file-manager/file_upload_clear.png)
 
@@ -77,3 +77,5 @@ Confirmando que consigo realizar o upload de uma webshell, testei se realmente o
 ![](/imgs/urce-wp-file-manager/RCE.png)
 
 A webshell "b4ckd00r.php" foi interpretada com sucesso pelo servidor e *voilà*!, **Unauth RCE** :smirk:.
+
+**Atenção**: A técnica desmontrada neste artigo tem o propósito de ser um material educativo, a exploração foi feita em um ambiente controlado. Não realize esta exploração sem a autorização do dono do servidor, pois isto poderá resultar em um crime! 
