@@ -22,7 +22,7 @@ Vale observar que este plugin tem mais de **700 mil instalações ativas**.
 
 Com o ambiente pronto para os testes, tentei encontrar algum vazamento de informação sensível que talvez fosse causada devido a configuração do container ou do plugin. 
 
-Fiz uma wordlist com os arquivos do meu interesse que poderiam ser acessíveis através do servidor Apache.
+Fiz uma wordlist com os arquivos do meu interesse, que poderiam ser acessíveis através do servidor Apache.
 
 ![](/imgs/urce-wp-file-manager/leak_check.png)
 
@@ -32,7 +32,7 @@ Com a wordlist pronta, usei o fuzzer do zaproxy para enviar vários "GET" nos ar
 
 ![](/imgs/urce-wp-file-manager/fuzz_example.png)
 
-Para aumentar a velocidade do fuzzing, eu reduzo o delay e aumento a quantidade threads.
+Normalente para aumentar a velocidade do fuzzing, eu reduzo o delay e aumento a quantidade threads.
 
 ![](/imgs/urce-wp-file-manager/fuzz_tunning.png)
 
