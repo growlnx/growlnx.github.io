@@ -54,7 +54,7 @@ Se o payload for interpretado com sucesso, o download de uma simples webshell se
 
 ![](/imgs/php-object-injection-better-search-replace/rce.png)
 
-*Voilà*!, foi possível obter uma unauth RCE através de uma deserialização insegura.
+*Voilà*!, foi possível obter uma unauth RCE através de uma deserialização insegura do conteúdo nos comentários.
 
 ## Referências
 
