@@ -24,7 +24,7 @@ Dentre suas funcionalidades, o plugin consegue realizar o processamento de objet
 Depois de algum tempo na análise estática, encontrei o [trecho de código](https://plugins.trac.wordpress.org/browser/better-search-replace/trunk/includes/class-bsr-db.php
 ) responsável por realizar a deserialização. Achei interessante, logo comecei a análise dinâmica.
 
-Infelizmente não consegui iniciar uma POP Chain utilizando o próprio plugin (que por acaso tornaria a vulnerabilidade bem mais crítica) :disappointed:. Por sorte, o Wordpress permite que um plugin consiga acessar as classes ou funções que foram definidas em outros plugins, ou seja, não existe um "sandbox". Consequentemente, isto abre a possibilidade de iniciar uma POP Chain utilizando o código-fonte de outro plugin.
+Infelizmente não encontrei um trecho de código que possibilitasse iniciar a POP Chain utilizando o próprio plugin (que por acaso tornaria a vulnerabilidade bem mais crítica) :disappointed:. Por sorte, o Wordpress permite que um plugin consiga acessar as classes ou funções que foram definidas em outros plugins, ou seja, não existe um "sandbox". Consequentemente, isto abre a possibilidade de iniciar a POP Chain utilizando o código-fonte de outros plugins.
 
 Para facilitar a minha vida, criei o plugin ["WP Object Injection Proof of Concept"](https://github.com/growlnx/WP-Object-Injection-PoC), este plugin possibilita o ataque de **Reutilização de Código**, me poupando tempo com **POP Chains**.
 
