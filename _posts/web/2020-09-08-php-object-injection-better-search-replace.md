@@ -19,10 +19,10 @@ Sinceramente não entendo porque é tão usado, segundo o Wordpress, existe **ma
 
 Dentre suas funcionalidades, o plugin consegue realizar o processamento de objetos PHP serializados, então resolvi fazer Code Review deste plugin.
 
-![](/imgs/php-object-injection-better-search-replace/func_unserialize.png)
+Depois de algum tempo na análise estática, encontrei o [trecho de código abaixo](https://plugins.trac.wordpress.org/browser/better-search-replace/trunk/includes/class-bsr-db.php
+), ele é responsável por realizar a deserialização. Achei interessante, logo comecei a análise dinâmica.
 
-Depois de algum tempo na análise estática, encontrei o [trecho de código](https://plugins.trac.wordpress.org/browser/better-search-replace/trunk/includes/class-bsr-db.php
-) responsável por realizar a deserialização. Achei interessante, logo comecei a análise dinâmica.
+![](/imgs/php-object-injection-better-search-replace/func_unserialize.png)
 
 Infelizmente não encontrei um trecho de código que possibilitasse iniciar a POP Chain utilizando o próprio plugin (que por acaso tornaria a vulnerabilidade bem mais crítica) :disappointed:. Por sorte, o Wordpress permite que um plugin consiga acessar as classes ou funções que foram definidas em outros plugins, ou seja, não existe um "sandbox". Consequentemente, isto abre a possibilidade de iniciar a POP Chain utilizando o código-fonte de outros plugins.
 
