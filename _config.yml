@@ -6,7 +6,9 @@
 name: Growlnx
 
 # Short bio or description (displayed in the header)
-description: Blog que uso para falar merdas aleatoriamente
+description:
+  pt: Blog que uso para falar merdas aleatoriamente
+  en: Blog I use to randomly talk bullshit 
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars2.githubusercontent.com/u/29213920
