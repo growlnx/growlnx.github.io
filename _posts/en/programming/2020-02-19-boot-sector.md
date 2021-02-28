@@ -1,20 +1,21 @@
 ---
 layout: post-en
 title: Boot Sector Programming
-permalink: /programming/boot-sector-programming
+permalink: /programming/boot_sector_programming
+author: Jesus
 ---
 
-## Introdution
+## 1. Introduction
 
-A Boot sector program is a class of software that fits into very first 510 bytes of Master Boot Record. This program is loaded by the BIOS firmware into RAM and then executed on bare metal.
+A Boot sector program is a type of software that fits into very first 510 bytes of Master Boot Record (MBR). When the computer boots, this program is loaded by the BIOS firmware into RAM and then executed in real mode.
 
-Because the populaziration of BIOS UEFI, boot sector programs are no longer widely used. The BIOS UEFI uses the GPT partition scheme, and can launch an 64 bits EFI app with the PE32+ binary format (BIOS UEFI follows the Microsoft standard). As you can see, BIOS UEFI is a better alternative.
+Today, the BIOS has been replaced by the UEFI BIOS. In brief, the UEFI BIOS uses the GUID Partition Table (GPT) scheme, and can launch an 64 bits EFI app with the PE32+ binary format (UEFI follows the Microsoft standard). If you are looking to develop something modern, you should use the UEFI BIOS and <ins>not the legacy BIOS</ins>.
 
-In this article I will demonstrate how easy is to develop a <ins>boot sector program</ins> and a <ins>stage 1 bootloader</ins>.
+In this article I will demonstrate how <s>easy is</s> to develop a <ins>stage 1 bootloader</ins> for the legacy BIOS.
 
-**OBS**.: The main objective here isn't to teach the assembly programming language.
+> **Note**: Be aware that the main purpose here isn't to teach the assembly programming language.
 
-## Development Environment
+## 2. Development Environment
 
 To develop boot sector programs you don't need a big toolkit, three open source tools will suffice.
 
@@ -22,7 +23,7 @@ To develop boot sector programs you don't need a big toolkit, three open source 
 - **QEMU**: Hardware emulator
 - **GDB**: Assembly debugger
 
-For example, we can easily install this tools using **APT** package manager on debian-based distros, as you can see in the command below:
+For example, we can easily install this tools using **APT** package manager on debian-based distros.
 
 <figure class="highlight-figure highlight">
 {% highlight plaintext %}
@@ -30,11 +31,7 @@ For example, we can easily install this tools using **APT** package manager on d
 {% endhighlight %}
 </figure>
 
-All codes here can run on real hardware too. On machines with BIOS UEFI, you need to enable the legacy boot option in BIOS setup. As in the image below:
-
-![](/imgs/boot-sector-programming/bios-legacy-boot.png)
-
-### First Program
+### 2.1 First Program
 
 To do the first test of the development environment, we will use a simple hello world program.
 
@@ -43,6 +40,8 @@ To do the first test of the development environment, we will use a simple hello 
 {% highlight nasm linenos %}
 [bits 16]
 [org 0x7c00]
+
+jmp 000000h:07c00h
 
 mov al, 1 ; set atributte string write mode
 mov bh, 0 ; VGA page number
@@ -63,17 +62,65 @@ msg: db "hello world"
 msg_size: equ $-msg
 
 times 510-($-$$) db 0 ; padding to fiil the bootsector
-dw 0AA55h ; bootable flag
+dw 0AA55h ; bootable flag always goes at 0x01B8 offset
 {% endhighlight %}
 </figure>
 
-## Master Boot Record
+Let's assemble it using **NASM**. The argument **-f flat** means that we are using a FLAT file format.
 
+<figure class="highlight-figure highlight">
+{% highlight plaintext %}
+$ nasm -f bin hello_world.asm -o hello_world.bin
+{% endhighlight %}
+</figure>
 
+Before run, let's check if this really is a bootable program with the Linux **file** command.
 
-## Basic Input Output System
+<figure class="highlight-figure highlight">
+{% highlight plaintext %}
+$ file ./hello_world.bin 
+hello_world.bin: DOS/MBR boot sector
+{% endhighlight %}
+</figure>
 
-## Real Mode
+The output of file command confirm, we have a MBR bootable program. Now, let's start the emulation with **QEMU**.
+
+<figure class="highlight-figure highlight">
+{% highlight plaintext %}
+$ qemu-system-i386 ./hello_world.bin
+{% endhighlight %}
+</figure>
+
+![](/imgs/boot-sector-programming/qemu_hello_world.png)
+
+If you see this screen above, cool, it's working.
+
+<!-- ### 2.2 Testing on Real Hardware
+
+All codes here can run on real hardware too. On machines with UEFI BIOS, you need to enable the legacy boot option in BIOS setup.
+
+![](/imgs/boot-sector-programming/bios-legacy-boot.png)
+
+We will record the hello_world.bin file to a USB Flash Drive Media.
+
+<figure class="highlight-figure highlight">
+{% highlight plaintext %}
+$ dd if=./hello_world.bin of=<your USB dev> conv=notrunc
+{% endhighlight %}
+</figure>
+ -->
+## 3. MBR
+
+### 3.1 Floopy Disk
+
+## 4. BIOS
+The BIOS is a firmware that is recorded on.
+
+## 5. Real Mode
+
+### 5.1 A20 Line
+
+## 6. Bootloader
 
 ## References
 

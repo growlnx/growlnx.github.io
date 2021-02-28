@@ -1,7 +1,7 @@
 ---
 layout: post-pt
 title: Unauth RCE no Wordpress File Manager
-permalink: /web/urce-wp-file-manager
+permalink: /pt/web/urce-wp-file-manager
 ---
 
 **Atenção**: A técnica demonstrada neste artigo tem o propósito de ser um material educativo, a exploração foi feita em um ambiente controlado. Não realize esta exploração sem a autorização do dono do servidor, pois isto poderá resultar em um crime!

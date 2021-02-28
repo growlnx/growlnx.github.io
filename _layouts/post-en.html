@@ -1,16 +1,24 @@
 ---
 layout: default-en
+author: growlnx
 ---
 
 <article class="post">
+  <div class="date">
+    Written in {{ page.date |  date: "%m/%d/%Y"}}, by {{site.author}}.<br>
+  </div>
   <h1>{{ page.title }}</h1>
 
   <div class="entry">
     {{ content }}
   </div>
-
-  <div class="date">
-    Written in {{ page.date |  date: "%Y-%m-%d"}}, by me.
+    
+  <div class="wrapper-footer">
+    <div class="container">
+      <footer class="footer">
+        <p>If you found this helpful, share with your friends, goodbye!</p>
+       </footer>
+    </div>
   </div>
 
 </article>
