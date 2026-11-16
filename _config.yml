@@ -1,11 +1,11 @@
 # Site-wide settings
 # ------------------
 #
-# title: Your awesome title
+title: Growlnx
 #
-# author:
-#   name: GitHub User
-#   email: your-email@domain.com
+author:
+  name: Growlnx
+  email: growlnx@protonmail.com
 #
 # The `>` after `description:` means to ignore line-breaks until next key. If
 #   you wish to omit the line-break after the end of text, use `>-` instead.
@@ -35,9 +35,9 @@ plugins:
 
 # Uncomment the following setting if you wish to disable deprecation warnings
 #   from newer versions of sass converter. Adapt as required.
-# sass:
-#   quiet_deps: true
-#   silence_deprecations: [import]
+sass:
+  quiet_deps: true
+  silence_deprecations: [import, global-builtin, color-functions]
 
 
 # Minima-specific settings (applicable to Minima v3 and above only)
@@ -60,8 +60,8 @@ minima:
 #     If you wish to link only specific pages in the site-navigation, use this
 #     and list the `path` property (as represented via Liquid) of the pages in
 #     the order they should be rendered.
-#   nav_pages:
-#     - about.md
+  nav_pages:
+    - about.md
 #
 #   Set to `true` to show excerpts on the homepage.
 #   show_excerpts: false
@@ -69,7 +69,7 @@ minima:
 #   Minima date format.
 #     The default value is "%b %d, %Y" (e.g. Nov 14, 2023).
 #     Refer to https://shopify.github.io/liquid/filters/date/ for valid values
-#   date_format: "%b-%d-%Y"
+  date_format: "%b %d, %Y"
 #
 #   Social Media Links.
 #     Renders icons via Font Awesome Free webfonts CDN, based on ordered list of
@@ -77,14 +77,14 @@ minima:
 #       * title    Tooltip rendered on hovering over icon.
 #       * icon     Font Awesome icon id. `github` corresponds to `fa-github`.
 #       * url      Full URL of social profile.
-#   social_links:
-#     - title: Minima Theme repository at GitHub
-#       icon: github
-#       url: "https://github.com/jekyll/minima"
-#     - title: Jekyll at X (formerly Twitter)
-#       icon: x-twitter
-#       url: "https://x.com/jekyllrb"
-#
+  social_links:
+    - title: Growlnx at GitHub
+      icon: github
+      url: "https://github.com/growlnx"
+    # - title: Jekyll at X (formerly Twitter)
+    #   icon: x-twitter
+    #   url: "https://x.com/jekyllrb"
+
 #   Hide syndication feed subscription link.
 #     RSS / Atom feed link is always rendered as the last item of social-links
 #     list. Set below key to `true` to not have the link to feed rendered as
