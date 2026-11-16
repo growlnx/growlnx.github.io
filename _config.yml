@@ -69,10 +69,10 @@ minima:
   date_format: "%b %d, %Y"
 #
 #   Social Media Links.
-#     Renders icons via Font Awesome Free webfonts CDN, based on ordered list of
+#     Renders inline SVG icons (no CDN) based on ordered list of
 #     entries. Valid entry keys:
 #       * title    Tooltip rendered on hovering over icon.
-#       * icon     Font Awesome icon id. `github` corresponds to `fa-github`.
+#       * icon     Icon id. Only `github` is bundled; others fall back to the title text.
 #       * url      Full URL of social profile.
   social_links:
     - title: Growlnx at GitHub

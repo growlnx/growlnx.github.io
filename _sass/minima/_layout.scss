@@ -62,41 +62,51 @@
     }
 
     .menu-icon {
+      position: relative;
       float: right;
       width: 36px;
-      height: 26px;
-      line-height: 0;
-      padding-top: 18px;
-      text-align: center;
+      height: 36px;
+      color: $text-color;
 
-      &::before {
-        font-family: "Font Awesome 7 Free";
-        font-weight: 900;
+      // Hamburger drawn with CSS (no icon font / CDN required).
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 2px;
+        margin: -1px 0 0 -10px;
+        background: currentColor;
       }
 
-      > svg path {
-        fill: $border-color-03;
+      &::before {
+        box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor;
+      }
+
+      &::after {
+        display: none;
       }
     }
 
     #nav-trigger {
-      ~ label[for=nav-trigger] .menu-icon {
-        &::before {
-          content: "\f0c9";
-          font-size: 1.25em;
-        }
-      }
       ~ .nav-items {
         clear: both;
         display: none
       }
       &:checked {
-      ~ label[for=nav-trigger] .menu-icon {
-        &::before {
-          content: "\f00d";
-          font-size: 1.5em;
+        // Close icon ("X") drawn with two rotated bars.
+        ~ label[for=nav-trigger] .menu-icon {
+          &::before {
+            box-shadow: none;
+            transform: rotate(45deg);
+          }
+          &::after {
+            display: block;
+            transform: rotate(-45deg);
+          }
         }
-      }
         ~ .nav-items {
           display: block;
           padding-bottom: 5px;
