@@ -29,10 +29,10 @@
 # remote_theme: jekyll/minima@d4d779a
 #
 # Minima requires the following plugins:
-# plugins:
-#  - jekyll-feed
-#  - jekyll-seo-tag
-#
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
 # Uncomment the following setting if you wish to disable deprecation warnings
 #   from newer versions of sass converter. Adapt as required.
 # sass:
@@ -46,7 +46,8 @@
 #  *All described config keys below should be nested under the top-level
 #   `minima` key.*
 #
-# minima:
+minima:
+  skin: auto
 #   Minima skin selection. Available skins are:
 #     * classic            Default, light color scheme.
 #     * dark               Dark variant of the classic skin.
@@ -54,7 +55,6 @@
 #     * solarized-light    Light variant of solarized color scheme.
 #     * solarized-dark     Dark variant of solarized color scheme.
 #     * solarized          Adaptive skin for solarized color scheme skins.
-#   skin: auto
 #
 #   Specific pages for site navigation.
 #     If you wish to link only specific pages in the site-navigation, use this
