@@ -23,9 +23,14 @@ layout: base
     {%- endif -%}
     <ul class="post-list">
       {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+      {%- assign pinned_posts = posts | where: "pinned", true -%}
+      {%- assign other_posts = posts | where_exp: "p", "p.pinned != true" -%}
+      {%- assign posts = pinned_posts | concat: other_posts -%}
       {%- for post in posts -%}
       <li>
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
+        <span class="post-meta">
+          {%- if post.pinned -%}Pinned{%- else -%}{{ post.date | date: date_format }}{%- endif -%}
+        </span>
         <h3>
           <a class="post-link" href="{{ post.url | relative_url }}">
             {{ post.title | escape }}

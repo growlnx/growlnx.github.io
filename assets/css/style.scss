@@ -2,6 +2,32 @@
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 
+// Color palette (3 roles). Defined before the skin is imported so that the
+// skin's `!default` values don't override them.
+//   text   : body text, headings, site title, tables
+//   muted  : dates, footer, labels, icons
+//   link   : every link (normal, visited and hover share the same color)
+
+// Light mode
+$lm-text-color:         #333333;
+$lm-heading-color:      $lm-text-color;
+$lm-site-title-color:   $lm-text-color;
+$lm-table-text-color:   $lm-text-color;
+$lm-brand-color-dimmed: #666666;
+$lm-link-base-color:    #1e69d8;
+$lm-link-visited-color: $lm-link-base-color;
+$lm-link-hover-color:   $lm-link-base-color;
+
+// Dark mode
+$dm-text-color:         #c8c8c8;
+$dm-heading-color:      $dm-text-color;
+$dm-site-title-color:   $dm-text-color;
+$dm-table-text-color:   $dm-text-color;
+$dm-brand-color-dimmed: #8a8a8a;
+$dm-link-base-color:    #6ea8e8;
+$dm-link-visited-color: $dm-link-base-color;
+$dm-link-hover-color:   $dm-link-base-color;
+
 @import
   "minima/skins/{{ site.minima.skin | default: 'classic' }}",
   "minima/initialize";

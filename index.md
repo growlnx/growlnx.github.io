@@ -7,3 +7,5 @@
 #
 layout: home
 ---
+
+> A place I use to talk about random stuff.

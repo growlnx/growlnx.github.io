@@ -2,9 +2,15 @@
 # ------------------
 #
 title: Growlnx
+# Stylized title, shown only in the site header. The plain `title` above is used
+# for <title>, SEO, feed and screen readers.
+title_display: "Gяøwlиx"
+#
+# Base URL of the site (no trailing slash). Used for canonical URLs, sitemap and feed.
+url: "https://growlnx.github.io"
 #
 author:
-  name: Growlnx
+  name: "Gяøwlиx"
   email: growlnx@protonmail.com
 #
 # The `>` after `description:` means to ignore line-breaks until next key. If
@@ -29,6 +35,7 @@ description: A place I use to talk about random stuff
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Uncomment the following setting if you wish to disable deprecation warnings
 #   from newer versions of sass converter. Adapt as required.
