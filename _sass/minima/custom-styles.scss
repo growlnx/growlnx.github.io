@@ -1,2 +1,28 @@
 // Placeholder to allow defining custom styles that override everything else.
 // (Use `_sass/minima/custom-variables.scss` to override variable defaults)
+
+// Center the text block of posts/pages. Its width fits the content and grows
+// with long paragraphs until it reaches the wrapper width; text stays left-aligned.
+.post-content {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+// Comfortable reading width (~70 characters per line). Code blocks, tables and
+// images may still use the full content width.
+.post-content p,
+.post-content li,
+.post-content blockquote {
+  max-width: 70ch;
+}
+
+// Videos: responsive, same spacing as other block content.
+.post-content video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: $spacing-unit auto;
+  border-radius: 4px;
+}
